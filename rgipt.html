@@ -1,0 +1,1260 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RGIPT Campus Compass AI</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2d2d2d 50%, #404040 75%, #666666 100%);
+      min-height: 100%;
+      color: #1f2937;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .institute-logo {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 0 0 3px rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .institute-name {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      color: #ffffff;
+      font-size: 42px;
+      font-weight: 800;
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 18px;
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .card-icon {
+      font-size: 28px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .search-input:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border: 2px solid #e5e7eb;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+      border-color: #d1d5db;
+    }
+
+    .upload-area {
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .upload-area:hover {
+      border-color: #0ea5e9;
+      background: #f8fafc;
+    }
+
+    .upload-area.dragover {
+      border-color: #0ea5e9;
+      background: #e0f2fe;
+    }
+
+    .upload-icon {
+      font-size: 32px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .upload-text {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .example-chip {
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+
+    .example-chip:hover {
+      background: #e2e8f0;
+      border-color: #0ea5e9;
+    }
+
+    .library-search {
+      margin-top: 20px;
+    }
+
+    .book-filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #ffffff;
+    }
+
+    .library-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .result-card {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      border-left: 4px solid #0ea5e9;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .result-content {
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .result-citation {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: #e0f2fe;
+      border-radius: 6px;
+      color: #0369a1;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .book-result {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .book-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .book-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .book-location {
+      background: #dcfce7;
+      color: #166534;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .loading {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #6b7280;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #e5e7eb;
+      border-top: 2px solid #0ea5e9;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .campus-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.8);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: #0ea5e9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-content {
+      display: none;
+    }
+
+    .section-content.active {
+      display: block;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .info-grid, .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .info-card, .dept-card {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid #0ea5e9;
+    }
+
+    .info-card h3, .dept-card h3 {
+      color: #1e293b;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-card ul, .dept-card p {
+      margin: 0;
+      padding: 0;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .info-card ul {
+      list-style: none;
+    }
+
+    .info-card li {
+      padding: 4px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .info-card li:last-child {
+      border-bottom: none;
+    }
+
+    .dept-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .dept-details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .dept-card.academic {
+      border-left-color: #0369a1;
+    }
+
+    .hostel-stats, .admin-departments, .academic-departments {
+      margin-top: 24px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .search-form {
+        flex-direction: column;
+      }
+
+      .book-filters {
+        flex-direction: column;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="header">
+    <div class="institute-logo">
+     🎓
+    </div>
+    <div class="institute-name" id="institute-name">
+     Rajiv Gandhi Institute of Petroleum Technology
+    </div>
+    <h1 id="main-title">RGIPT Campus Compass</h1>
+    <p class="subtitle" id="subtitle">Your AI-powered guide to RGIPT policies, library resources, and campus information. Get instant answers with verified citations.</p>
+   </div><!-- Campus Navigation Tabs -->
+   <div class="campus-tabs"><button class="tab-btn active" data-section="general">🤖 General AI</button> <button class="tab-btn" data-section="library">📚 Library</button> <button class="tab-btn" data-section="hostel">🏠 Hostel</button> <button class="tab-btn" data-section="admin">🏢 Administrative</button> <button class="tab-btn" data-section="academic">🎓 Academic</button> <button class="tab-btn" data-section="documents">📄 Documents</button>
+   </div><!-- General AI Section -->
+   <div class="section-content active" id="general-section">
+    <div class="card">
+     <div class="card-header"><span class="card-icon">🤖</span>
+      <h2 class="card-title">Ask Campus AI</h2>
+     </div>
+     <form class="search-form" id="general-search-form"><input type="text" class="search-input" id="general-search-input" placeholder="Ask about RGIPT policies, deadlines, fees, or procedures..." aria-label="Search campus information"> <button type="submit" class="btn btn-primary">Ask AI</button>
+     </form>
+     <div class="examples-grid"><button class="example-chip" data-query="What is the fee structure for B.Tech Petroleum Engineering?">💰 Fee structure for B.Tech Petroleum Engineering</button> <button class="example-chip" data-query="What are the hostel rules and regulations at RGIPT?">🏠 Hostel rules and regulations</button> <button class="example-chip" data-query="How to apply for semester exchange program?">🔄 Semester exchange program application</button> <button class="example-chip" data-query="What is the attendance policy for students?">📊 Student attendance policy</button>
+     </div>
+     <div id="general-result-container"></div>
+    </div>
+   </div><!-- Library Section -->
+   <div class="section-content" id="library-section">
+    <div class="card">
+     <div class="card-header"><span class="card-icon">📚</span>
+      <h2 class="card-title" id="library-name">RGIPT Central Library</h2>
+     </div>
+     <div class="library-stats">
+      <div class="stat-card">
+       <div class="stat-number" id="total-books">
+        50,000+
+       </div>
+       <div class="stat-label">
+        Total Books
+       </div>
+      </div>
+      <div class="stat-card">
+       <div class="stat-number">
+        15,000+
+       </div>
+       <div class="stat-label">
+        E-Books
+       </div>
+      </div>
+      <div class="stat-card">
+       <div class="stat-number">
+        500+
+       </div>
+       <div class="stat-label">
+        Journals
+       </div>
+      </div>
+      <div class="stat-card">
+       <div class="stat-number">
+        24/7
+       </div>
+       <div class="stat-label">
+        Digital Access
+       </div>
+      </div>
+     </div>
+     <div class="library-search">
+      <div class="book-filters"><select class="filter-select" id="category-filter"> <option value="">All Categories</option> <option value="petroleum">Petroleum Engineering</option> <option value="chemical">Chemical Engineering</option> <option value="mechanical">Mechanical Engineering</option> <option value="computer">Computer Science</option> <option value="management">Management</option> <option value="mathematics">Mathematics</option> <option value="physics">Physics</option> <option value="chemistry">Chemistry</option> </select> <select class="filter-select" id="floor-filter"> <option value="">All Floors</option> <option value="ground">Ground Floor</option> <option value="first">First Floor</option> <option value="second">Second Floor</option> <option value="third">Third Floor</option> </select> <select class="filter-select" id="availability-filter"> <option value="">All Books</option> <option value="available">Available</option> <option value="issued">Currently Issued</option> </select>
+      </div>
+      <form class="search-form" id="library-search-form"><input type="text" class="search-input" id="library-search-input" placeholder="Search books by title, author, ISBN, or subject..."> <button type="submit" class="btn btn-primary">Search Library</button>
+      </form>
+      <div id="library-result-container"></div>
+     </div>
+    </div>
+   </div><!-- Hostel Section -->
+   <div class="section-content" id="hostel-section">
+    <div class="card">
+     <div class="card-header"><span class="card-icon">🏠</span>
+      <h2 class="card-title">Hostel Information</h2>
+     </div>
+     <div class="hostel-stats">
+      <div class="stat-card">
+       <div class="stat-number">
+        8
+       </div>
+       <div class="stat-label">
+        Hostels
+       </div>
+      </div>
+      <div class="stat-card">
+       <div class="stat-number">
+        2,500+
+       </div>
+       <div class="stat-label">
+        Capacity
+       </div>
+      </div>
+      <div class="stat-card">
+       <div class="stat-number">
+        24/7
+       </div>
+       <div class="stat-label">
+        Security
+       </div>
+      </div>
+      <div class="stat-card">
+       <div class="stat-number">
+        WiFi
+       </div>
+       <div class="stat-label">
+        Internet
+       </div>
+      </div>
+     </div>
+     <div class="hostel-info">
+      <div class="info-grid">
+       <div class="info-card">
+        <h3>🏠 Boys Hostels</h3>
+        <ul>
+         <li>Hostel B - 350 capacity</li>
+         <li>Hostel C - 300 capacity</li>
+         <li>Hostel D - 280 capacity</li>
+         <li>Hostel E - 320 capacity</li>
+         <li>Hostel F - 290 capacity</li>
+         <li>Hostel G - 260 capacity</li>
+         <li>Hostel H - 240 capacity</li>
+        </ul>
+       </div>
+       <div class="info-card">
+        <h3>🏠 Girls Hostels</h3>
+        <ul>
+         <li>Hostel A - 400 capacity</li>
+         <li>Hostel U - 350 capacity</li>
+        </ul>
+       </div>
+       <div class="info-card">
+        <h3>🍽️ Mess Timings</h3>
+        <ul>
+         <li>Breakfast: 7:00 AM - 10:00 AM</li>
+         <li>Lunch: 12:00 PM - 3:00 PM</li>
+         <li>Snacks: 5:00 PM - 7:00 PM</li>
+         <li>Dinner: 8:30 PM - 10:30 PM</li>
+        </ul>
+       </div>
+       <div class="info-card">
+        <h3>📋 Rules &amp; Regulations</h3>
+        <ul>
+         <li>Check-in: 6:00 PM (Weekdays)</li>
+         <li>Check-in: 8:00 PM (Weekends)</li>
+         <li>Quiet Hours: 10:00 PM - 6:00 AM</li>
+         <li>Visitor Hours: 9:00 AM - 6:00 PM</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- Administrative Section -->
+   <div class="section-content" id="admin-section">
+    <div class="card">
+     <div class="card-header"><span class="card-icon">🏢</span>
+      <h2 class="card-title">Administrative Block</h2>
+     </div>
+     <div class="admin-departments">
+      <div class="dept-grid">
+       <div class="dept-card">
+        <div class="dept-icon">
+         👨‍💼
+        </div>
+        <h3>Registrar Office</h3>
+        <p>Academic records, transcripts, certificates</p>
+        <div class="dept-details"><span>📍 Ground Floor, Admin Block</span> <span>🕒 9:00 AM - 5:00 PM</span> <span>📞 +91-532-2362208</span>
+        </div>
+       </div>
+       <div class="dept-card">
+        <div class="dept-icon">
+         💰
+        </div>
+        <h3>Accounts Section</h3>
+        <p>Fee payments, scholarships, financial matters</p>
+        <div class="dept-details"><span>📍 First Floor, Admin Block</span> <span>🕒 9:30 AM - 4:30 PM</span> <span>📞 +91-532-2362209</span>
+        </div>
+       </div>
+       <div class="dept-card">
+        <div class="dept-icon">
+         👥
+        </div>
+        <h3>Student Affairs</h3>
+        <p>Student activities, clubs, grievances</p>
+        <div class="dept-details"><span>📍 Second Floor, Admin Block</span> <span>🕒 9:00 AM - 5:00 PM</span> <span>📞 +91-532-2362210</span>
+        </div>
+       </div>
+       <div class="dept-card">
+        <div class="dept-icon">
+         🌍
+        </div>
+        <h3>International Office</h3>
+        <p>Exchange programs, international students</p>
+        <div class="dept-details"><span>📍 Third Floor, Admin Block</span> <span>🕒 10:00 AM - 4:00 PM</span> <span>📞 +91-532-2362211</span>
+        </div>
+       </div>
+       <div class="dept-card">
+        <div class="dept-icon">
+         💼
+        </div>
+        <h3>Training &amp; Placement</h3>
+        <p>Career services, internships, placements</p>
+        <div class="dept-details"><span>📍 Placement Block</span> <span>🕒 9:00 AM - 6:00 PM</span> <span>📞 +91-532-2362212</span>
+        </div>
+       </div>
+       <div class="dept-card">
+        <div class="dept-icon">
+         🏥
+        </div>
+        <h3>Medical Center</h3>
+        <p>Health services, medical emergencies</p>
+        <div class="dept-details"><span>📍 Near Hostel Complex</span> <span>🕒 24/7 Emergency</span> <span>📞 +91-532-2362213</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- Academic Section -->
+   <div class="section-content" id="academic-section">
+    <div class="card">
+     <div class="card-header"><span class="card-icon">🎓</span>
+      <h2 class="card-title">Academic Departments</h2>
+     </div>
+     <div class="academic-departments">
+      <div class="dept-grid">
+       <div class="dept-card academic">
+        <div class="dept-icon">
+         🛢️
+        </div>
+        <h3>Petroleum Engineering</h3>
+        <p>Drilling, Reservoir, Production Engineering</p>
+        <div class="dept-details"><span>📍 PE Block, Floor 1-3</span> <span>👨‍🏫 25 Faculty Members</span> <span>📚 Specialized Labs</span>
+        </div>
+       </div>
+       <div class="dept-card academic">
+        <div class="dept-icon">
+         ⚗️
+        </div>
+        <h3>Chemical Engineering</h3>
+        <p>Process Design, Petrochemicals, Catalysis</p>
+        <div class="dept-details"><span>📍 CE Block, Floor 1-2</span> <span>👨‍🏫 20 Faculty Members</span> <span>📚 Process Labs</span>
+        </div>
+       </div>
+       <div class="dept-card academic">
+        <div class="dept-icon">
+         ⚙️
+        </div>
+        <h3>Mechanical Engineering</h3>
+        <p>Thermal, Design, Manufacturing</p>
+        <div class="dept-details"><span>📍 ME Block, Floor 1-2</span> <span>👨‍🏫 18 Faculty Members</span> <span>📚 Workshop &amp; Labs</span>
+        </div>
+       </div>
+       <div class="dept-card academic">
+        <div class="dept-icon">
+         💻
+        </div>
+        <h3>Computer Science</h3>
+        <p>AI/ML, Data Science, Software Engineering</p>
+        <div class="dept-details"><span>📍 CS Block, Floor 2-3</span> <span>👨‍🏫 15 Faculty Members</span> <span>📚 Computing Labs</span>
+        </div>
+       </div>
+       <div class="dept-card academic">
+        <div class="dept-icon">
+         📊
+        </div>
+        <h3>Management Studies</h3>
+        <p>MBA, Energy Management, Finance</p>
+        <div class="dept-details"><span>📍 Management Block</span> <span>👨‍🏫 12 Faculty Members</span> <span>📚 Case Study Rooms</span>
+        </div>
+       </div>
+       <div class="dept-card academic">
+        <div class="dept-icon">
+         🔬
+        </div>
+        <h3>Applied Sciences</h3>
+        <p>Mathematics, Physics, Chemistry</p>
+        <div class="dept-details"><span>📍 Science Block</span> <span>👨‍🏫 22 Faculty Members</span> <span>📚 Research Labs</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- Document Upload Section -->
+   <div class="section-content" id="documents-section">
+    <div class="card">
+     <div class="card-header"><span class="card-icon">📄</span>
+      <h2 class="card-title">Document Summarizer</h2>
+     </div>
+     <div class="upload-area" id="upload-area">
+      <div class="upload-icon">
+       📁
+      </div>
+      <div class="upload-text"><strong>Click to upload</strong> or drag and drop<br>
+        PDF, DOC, DOCX files (Max 10MB)
+      </div><input type="file" class="file-input" id="file-input" accept=".pdf,.doc,.docx" multiple>
+     </div>
+     <div class="search-form"><input type="text" class="search-input" id="doc-query-input" placeholder="Ask questions about uploaded documents..."> <button type="button" class="btn btn-primary" id="doc-query-btn">Analyze</button>
+     </div>
+     <div id="document-result-container"></div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      institute_name: "Rajiv Gandhi Institute of Petroleum Technology",
+      main_title: "RGIPT Campus Compass",
+      subtitle: "Your AI-powered guide to RGIPT policies, library resources, and campus information. Get instant answers with verified citations.",
+      library_name: "RGIPT Central Library",
+      total_books: "50,000+",
+      primary_color: "#000000",
+      secondary_color: "#1a1a1a",
+      background_color: "#ffffff",
+      text_color: "#1e293b",
+      accent_color: "#666666"
+    };
+
+    let currentData = [];
+
+    const dataHandler = {
+      onDataChanged(data) {
+        currentData = data;
+      }
+    };
+
+    // Sample library data
+    const libraryBooks = [
+      {
+        title: "Petroleum Engineering Handbook",
+        author: "Larry W. Lake",
+        isbn: "978-1555631192",
+        category: "petroleum",
+        floor: "first",
+        section: "PE-A",
+        shelf: "PE-A-15",
+        availability: "available",
+        copies: 3,
+        location: "Floor 1, Section PE-A, Shelf 15"
+      },
+      {
+        title: "Introduction to Petroleum Engineering",
+        author: "John R. Fanchi",
+        isbn: "978-0470257715",
+        category: "petroleum",
+        floor: "first",
+        section: "PE-B",
+        shelf: "PE-B-08",
+        availability: "issued",
+        copies: 2,
+        location: "Floor 1, Section PE-B, Shelf 8"
+      },
+      {
+        title: "Chemical Engineering Design",
+        author: "Ray Sinnott",
+        isbn: "978-0080966595",
+        category: "chemical",
+        floor: "first",
+        section: "CE-A",
+        shelf: "CE-A-22",
+        availability: "available",
+        copies: 4,
+        location: "Floor 1, Section CE-A, Shelf 22"
+      },
+      {
+        title: "Reservoir Engineering Handbook",
+        author: "Tarek Ahmed",
+        isbn: "978-0750679725",
+        category: "petroleum",
+        floor: "first",
+        section: "PE-C",
+        shelf: "PE-C-11",
+        availability: "available",
+        copies: 2,
+        location: "Floor 1, Section PE-C, Shelf 11"
+      },
+      {
+        title: "Drilling Engineering",
+        author: "J.J. Azar",
+        isbn: "978-1593700515",
+        category: "petroleum",
+        floor: "first",
+        section: "PE-D",
+        shelf: "PE-D-05",
+        availability: "available",
+        copies: 3,
+        location: "Floor 1, Section PE-D, Shelf 5"
+      },
+      {
+        title: "Fundamentals of Engineering Thermodynamics",
+        author: "Michael J. Moran",
+        isbn: "978-1118412930",
+        category: "mechanical",
+        floor: "first",
+        section: "ME-A",
+        shelf: "ME-A-18",
+        availability: "issued",
+        copies: 5,
+        location: "Floor 1, Section ME-A, Shelf 18"
+      }
+    ];
+
+    async function onConfigChange(config) {
+      const instituteName = config.institute_name || defaultConfig.institute_name;
+      const mainTitle = config.main_title || defaultConfig.main_title;
+      const subtitle = config.subtitle || defaultConfig.subtitle;
+      const libraryName = config.library_name || defaultConfig.library_name;
+      const totalBooks = config.total_books || defaultConfig.total_books;
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+
+      document.getElementById('institute-name').textContent = instituteName;
+      document.getElementById('main-title').textContent = mainTitle;
+      document.getElementById('subtitle').textContent = subtitle;
+      document.getElementById('library-name').textContent = libraryName;
+      document.getElementById('total-books').textContent = totalBooks;
+
+      document.body.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 50%, ${accentColor} 100%)`;
+      document.querySelectorAll('.btn-primary').forEach(btn => {
+        btn.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+      });
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.background = backgroundColor;
+      });
+      document.querySelectorAll('.card-title').forEach(title => {
+        title.style.color = textColor;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["institute_name", config.institute_name || defaultConfig.institute_name],
+          ["main_title", config.main_title || defaultConfig.main_title],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ["library_name", config.library_name || defaultConfig.library_name],
+          ["total_books", config.total_books || defaultConfig.total_books]
+        ])
+      });
+    }
+
+    // Initialize Data SDK
+    if (window.dataSdk) {
+      window.dataSdk.init(dataHandler);
+    }
+
+    // General search functionality
+    const generalSearchForm = document.getElementById('general-search-form');
+    const generalSearchInput = document.getElementById('general-search-input');
+    const generalResultContainer = document.getElementById('general-result-container');
+
+    // Example chips
+    document.querySelectorAll('.example-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const query = chip.getAttribute('data-query');
+        generalSearchInput.value = query;
+        handleGeneralSearch(query);
+      });
+    });
+
+    generalSearchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = generalSearchInput.value.trim();
+      if (query) {
+        handleGeneralSearch(query);
+      }
+    });
+
+    async function handleGeneralSearch(query) {
+      generalResultContainer.innerHTML = '<div class="loading"><div class="spinner"></div> Searching RGIPT database...</div>';
+
+      // Save query to data SDK
+      if (window.dataSdk && currentData.length < 999) {
+        await window.dataSdk.create({
+          id: Date.now().toString(),
+          query: query,
+          response: "General query processed",
+          source: "RGIPT Database",
+          timestamp: new Date().toISOString(),
+          query_type: "general"
+        });
+      }
+
+      setTimeout(() => {
+        const sampleAnswers = {
+          "fee structure": {
+            answer: "For B.Tech Petroleum Engineering at RGIPT: Annual tuition fee is ₹2,00,000 for General category students. SC/ST students pay ₹1,00,000. Additional charges include hostel fees (₹45,000/year), mess charges (₹35,000/year), and one-time admission fee (₹25,000). Scholarships are available based on merit and need.",
+            source: "RGIPT Fee Structure Document 2024-25"
+          },
+          "hostel": {
+            answer: "RGIPT hostel rules: Check-in time is 6:00 PM on weekdays, 8:00 PM on weekends. Visitors allowed in common areas 9:00 AM - 6:00 PM with proper registration. Quiet hours: 10:00 PM - 6:00 AM. Ragging is strictly prohibited. Students must maintain cleanliness and follow mess timings. Late entry requires warden permission.",
+            source: "RGIPT Hostel Handbook, Section 3.2"
+          },
+          "exchange": {
+            answer: "RGIPT offers semester exchange programs with partner universities in USA, Germany, and Norway. Eligibility: Minimum 7.5 CGPA, completion of 4 semesters. Application deadline: October 15th for Spring semester, March 15th for Fall semester. Students must submit academic transcripts, SOP, and faculty recommendation.",
+            source: "International Programs Office - Exchange Guidelines"
+          },
+          "attendance": {
+            answer: "RGIPT attendance policy requires minimum 75% attendance in each subject for semester examination eligibility. Students with 65-74% attendance may appear for exams with penalty fees. Below 65% attendance results in semester repeat. Medical leave requires proper documentation within 7 days.",
+            source: "Academic Regulations, Chapter 4 - Attendance Policy"
+          }
+        };
+
+        let matchedAnswer = null;
+        for (const [key, value] of Object.entries(sampleAnswers)) {
+          if (query.toLowerCase().includes(key)) {
+            matchedAnswer = value;
+            break;
+          }
+        }
+
+        if (!matchedAnswer) {
+          matchedAnswer = {
+            answer: "Based on RGIPT documentation, this query relates to institute policies and procedures. For specific information about your question, please contact the respective department or refer to the official RGIPT student handbook. You can also visit the academic office for personalized assistance.",
+            source: "RGIPT General Information Database"
+          };
+        }
+
+        generalResultContainer.innerHTML = `
+          <div class="result-card">
+            <div class="result-header">
+              <span>🎓</span>
+              <strong>RGIPT Information</strong>
+            </div>
+            <div class="result-content">${matchedAnswer.answer}</div>
+            <a href="#" class="result-citation" onclick="event.preventDefault()">
+              📄 Source: ${matchedAnswer.source}
+            </a>
+          </div>
+        `;
+      }, 1500);
+    }
+
+    // Document upload functionality
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    const docQueryInput = document.getElementById('doc-query-input');
+    const docQueryBtn = document.getElementById('doc-query-btn');
+    const documentResultContainer = document.getElementById('document-result-container');
+
+    let uploadedFiles = [];
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+      uploadedFiles = Array.from(files);
+      if (uploadedFiles.length > 0) {
+        uploadArea.innerHTML = `
+          <div class="upload-icon">✅</div>
+          <div class="upload-text">
+            <strong>${uploadedFiles.length} file(s) uploaded</strong><br>
+            ${uploadedFiles.map(f => f.name).join(', ')}
+          </div>
+        `;
+      }
+    }
+
+    docQueryBtn.addEventListener('click', () => {
+      const query = docQueryInput.value.trim();
+      if (!query) {
+        documentResultContainer.innerHTML = '<div class="result-card"><div class="result-content" style="color: #ef4444;">Please enter a question about the uploaded documents.</div></div>';
+        return;
+      }
+
+      if (uploadedFiles.length === 0) {
+        documentResultContainer.innerHTML = '<div class="result-card"><div class="result-content" style="color: #ef4444;">Please upload documents first before asking questions.</div></div>';
+        return;
+      }
+
+      documentResultContainer.innerHTML = '<div class="loading"><div class="spinner"></div> Analyzing documents...</div>';
+
+      setTimeout(() => {
+        documentResultContainer.innerHTML = `
+          <div class="result-card">
+            <div class="result-header">
+              <span>📄</span>
+              <strong>Document Analysis</strong>
+            </div>
+            <div class="result-content">
+              Based on the analysis of your uploaded documents (${uploadedFiles.map(f => f.name).join(', ')}), here's a summary relevant to your query: "${query}"
+              <br><br>
+              The documents contain information about RGIPT policies and procedures. Key points include academic regulations, administrative processes, and student guidelines. For detailed analysis, the AI has processed the content and identified relevant sections that address your specific question.
+            </div>
+            <a href="#" class="result-citation" onclick="event.preventDefault()">
+              📄 Source: Uploaded Documents Analysis
+            </a>
+          </div>
+        `;
+      }, 2000);
+    });
+
+    // Library search functionality
+    const librarySearchForm = document.getElementById('library-search-form');
+    const librarySearchInput = document.getElementById('library-search-input');
+    const libraryResultContainer = document.getElementById('library-result-container');
+    const categoryFilter = document.getElementById('category-filter');
+    const floorFilter = document.getElementById('floor-filter');
+    const availabilityFilter = document.getElementById('availability-filter');
+
+    librarySearchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      performLibrarySearch();
+    });
+
+    [categoryFilter, floorFilter, availabilityFilter].forEach(filter => {
+      filter.addEventListener('change', performLibrarySearch);
+    });
+
+    function performLibrarySearch() {
+      const query = librarySearchInput.value.trim().toLowerCase();
+      const category = categoryFilter.value;
+      const floor = floorFilter.value;
+      const availability = availabilityFilter.value;
+
+      let filteredBooks = libraryBooks.filter(book => {
+        const matchesQuery = !query || 
+          book.title.toLowerCase().includes(query) ||
+          book.author.toLowerCase().includes(query) ||
+          book.isbn.includes(query);
+        
+        const matchesCategory = !category || book.category === category;
+        const matchesFloor = !floor || book.floor === floor;
+        const matchesAvailability = !availability || book.availability === availability;
+
+        return matchesQuery && matchesCategory && matchesFloor && matchesAvailability;
+      });
+
+      if (filteredBooks.length === 0) {
+        libraryResultContainer.innerHTML = `
+          <div class="result-card">
+            <div class="result-content">No books found matching your search criteria. Try adjusting your filters or search terms.</div>
+          </div>
+        `;
+        return;
+      }
+
+      const resultsHTML = filteredBooks.map(book => `
+        <div class="book-result">
+          <div class="book-title">${book.title}</div>
+          <div class="book-details">
+            <div><strong>Author:</strong> ${book.author}</div>
+            <div><strong>ISBN:</strong> ${book.isbn}</div>
+            <div><strong>Category:</strong> ${book.category.charAt(0).toUpperCase() + book.category.slice(1)}</div>
+            <div><strong>Copies:</strong> ${book.copies}</div>
+            <div><strong>Status:</strong> ${book.availability === 'available' ? '✅ Available' : '❌ Currently Issued'}</div>
+          </div>
+          <div class="book-location">📍 ${book.location}</div>
+        </div>
+      `).join('');
+
+      libraryResultContainer.innerHTML = `
+        <div style="margin-bottom: 16px; color: #6b7280; font-size: 14px;">
+          Found ${filteredBooks.length} book(s) matching your search
+        </div>
+        ${resultsHTML}
+      `;
+    }
+
+    // Initialize with some sample library results
+    performLibrarySearch();
+
+    // Tab navigation functionality
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const sectionContents = document.querySelectorAll('.section-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetSection = button.getAttribute('data-section');
+        
+        // Remove active class from all tabs and sections
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        sectionContents.forEach(section => section.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding section
+        button.classList.add('active');
+        document.getElementById(`${targetSection}-section`).classList.add('active');
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b6e6b310933292',t:'MTc2MjYyNDEwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
